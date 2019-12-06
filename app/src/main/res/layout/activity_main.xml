@@ -4,27 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
 
     <EditText
         android:id="@+id/task_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:hint="enter your task title here !"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="211dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
         android:background="#E0EE13"
         android:gravity="center_horizontal|center_vertical"
         android:text="To Do List! "
-        android:textSize="24sp"
 
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
