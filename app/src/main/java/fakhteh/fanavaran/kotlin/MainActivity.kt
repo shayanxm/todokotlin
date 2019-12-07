@@ -32,7 +32,7 @@ show_task_page.setOnClickListener(View.OnClickListener {
     }
     transaction.addToBackStack(null)
 
-    val dialogFragment = TaskDoalogFragment.newintance("parameter")
+    val dialogFragment = TaskDoalogFragment.newIntance("parameter")
     dialogFragment.show(transaction, tranfserTag)
 })
 

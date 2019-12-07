@@ -14,13 +14,31 @@ import androidx.fragment.app.DialogFragment
  */
 class TaskDoalogFragment : DialogFragment() {
     companion object{
-fun newintance( tag:String):DialogFragment {
+fun newIntance( tag:String):DialogFragment {
     val taskDoalogFragment = TaskDoalogFragment();
 
     return taskDoalogFragment
 
-}
-}
+}}
+//        fun newInstance(someInt: Int): MyFragment {
+//            val myFragment = MyFragment()
+//
+//            val args = Bundle()
+//            args.putInt("someInt", someInt)
+//            myFragment.setArguments(args)
+//
+//            return myFragment
+//        }
+//}
+//
+//    fun newInstance(inComingId: Int): SubCategoryFragment {
+//
+//        val args = Bundle()
+//        args.putInt(CATEGORY_ID, inComingId)
+//        val fragment = SubCategoryFragment()
+//        fragment.setArguments(args)
+//        return fragment
+//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
