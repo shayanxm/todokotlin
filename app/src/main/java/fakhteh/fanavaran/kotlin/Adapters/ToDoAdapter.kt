@@ -1,11 +1,14 @@
 package fakhteh.fanavaran.kotlin.Adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fakhteh.fanavaran.kotlin.R
+import fakhteh.fanavaran.kotlin.model.DataBase
+import fakhteh.fanavaran.kotlin.model.Prioritys
 import kotlinx.android.synthetic.main.todo_list_row.view.*
 
 class ToDoAdapter(private val mainList: ArrayList<String>) :
@@ -15,7 +18,7 @@ class ToDoAdapter(private val mainList: ArrayList<String>) :
         //2
         private var view: View = v
         // private var photo: Photo? = null
-        private var name:String ?=null
+        private var name: String? = null
 
         //3
         init {
@@ -31,14 +34,22 @@ class ToDoAdapter(private val mainList: ArrayList<String>) :
             //5
             private val PHOTO_KEY = "PHOTO"
         }
-        fun bindView(name:String) {
+
+        fun bindView(name: String, position: Int) {
 //            this.photo = photo
 //            Picasso.with(view.context).load(photo.url).into(view.itemImage)
 //            view.itemDate.text = photo.humanDate
 //            view.itemDescription.text = photo.explanation
 //
-            this.name=name
-            view.row_name.text=name
+            this.name = name
+            view.row_name.text = name
+            when (DataBase.priorityOfTaskList.get(position)) {
+                Prioritys.HIGH -> view.setBackgroundColor(Color.RED)
+                Prioritys.MEDIUM -> view.setBackgroundColor(Color.YELLOW)
+                Prioritys.LOW -> view.setBackgroundColor(Color.GREEN)
+                Prioritys.UNDIFINED -> view.setBackgroundColor(Color.GRAY)
+
+            }
         }
 
     }
@@ -55,7 +66,7 @@ class ToDoAdapter(private val mainList: ArrayList<String>) :
 
 
         val itemPhoto = mainList[position]
-        holder.bindView(itemPhoto)
+        holder.bindView(itemPhoto, position)
 
     }
 

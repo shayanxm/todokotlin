@@ -53,4 +53,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_to_list"
         app:layout_constraintVertical_bias="0.263" />
+
+    <RadioGroup
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_to_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_title" >
+
+        <RadioButton
+            android:id="@+id/low_prio_RB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="low" />
+
+        <RadioButton
+            android:id="@+id/med_prio_RB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="medium" />
+
+        <RadioButton
+            android:id="@+id/hg_prio_RB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="high" />
+    </RadioGroup>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
