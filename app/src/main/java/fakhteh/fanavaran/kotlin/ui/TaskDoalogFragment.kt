@@ -26,7 +26,7 @@ class TaskDoalogFragment : DialogFragment() {
     private lateinit var adapter: ToDoAdapter
     private var mDb: WeatherDataBase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
- var mainLis=arrayListOf<WeatherData>()
+ var mainLis=arrayListOf<String>()
     private val mUiHandler = Handler()
     companion object {
         fun newintance(tag: String): DialogFragment {
@@ -44,31 +44,44 @@ class TaskDoalogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val thread = Thread {
+            val weatherData =
+                mDb?.weatherDataDao()?.getAll()
+            if (weatherData == null || weatherData?.size == 0) {
+                // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
+            } else {
+                val sizeL = weatherData.size
+                mainLis= convertDataToStringArray(weatherData as ArrayList<WeatherData>)
+                Log.e("database", "S:$sizeL")
+            }
+        }
+    thread.start()
         task_list_rv.apply {
             // set a LinearLayoutManager to handle Android
             // RecyclerView behavior
             layoutManager = LinearLayoutManager(activity)
             // set the custom adapter to the RecyclerView
-            mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-            mDbWorkerThread.start()
-            mDb = WeatherDataBase.getInstance(requireContext())
-            val task = Runnable {
-                val weatherData =
-                    mDb?.weatherDataDao()?.getAll()
-                mUiHandler.post({
-                    if (weatherData == null || weatherData?.size == 0) {
-                        // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
-                    } else {
-                        val sizeL=weatherData.size
-                        Log.e("database","S:$sizeL")
-                    }
-                })
-            }
-            mDbWorkerThread.postTask(task)
+//            mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+//            mDbWorkerThread.start()
+//            mDb = WeatherDataBase.getInstance(requireContext())
+//            val task = Runnable {
+//                val weatherData =
+//                    mDb?.weatherDataDao()?.getAll()
+//                mUiHandler.post({
+//                    if (weatherData == null || weatherData?.size == 0) {
+//                        // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
+//                    } else {
+//                        val sizeL=weatherData.size
+//                        Log.e("database","S:$sizeL")
+//                    }
+//                })
+//            }
+//            mDbWorkerThread.postTask(task)
 
 
-
-            adapter = ToDoAdapter(    convertDataToStringArray(mainLis) as ArrayList<String>)
+            val sizeL = mainLis.size
+            Log.e("database", "S:$sizeL")
+            adapter = ToDoAdapter(   mainLis as ArrayList<String>)
         }
 
     }
@@ -79,23 +92,6 @@ class TaskDoalogFragment : DialogFragment() {
         return res
     }
 
-    private fun loadDataBase(): Runnable {
-
-        val task = Runnable {
-            val weatherData =
-                mDb?.weatherDataDao()?.getAll()
-            mUiHandler.post({
-                if (weatherData == null || weatherData?.size == 0) {
-                    // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
-                } else {
-                    mainLis= weatherData as ArrayList<WeatherData>
-                    val sizeL = weatherData.size
-                    Log.e("database", "S:$sizeL")
-                }
-            })
-        }
-        return task
-    }
 
 
 }
