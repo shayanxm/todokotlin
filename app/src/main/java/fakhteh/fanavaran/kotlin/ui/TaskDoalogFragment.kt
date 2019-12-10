@@ -15,8 +15,6 @@ import fakhteh.fanavaran.kotlin.R
 import fakhteh.fanavaran.kotlin.database.DbWorkerThread
 import fakhteh.fanavaran.kotlin.database.WeatherData
 import fakhteh.fanavaran.kotlin.database.WeatherDataBase
-import fakhteh.fanavaran.kotlin.model.DataBase
-import fakhteh.fanavaran.kotlin.model.Prioritys
 import kotlinx.android.synthetic.main.fragment_task_doalog.*
 
 /**
@@ -25,9 +23,8 @@ import kotlinx.android.synthetic.main.fragment_task_doalog.*
 class TaskDoalogFragment : DialogFragment() {
     private lateinit var adapter: ToDoAdapter
     private var mDb: WeatherDataBase? = null
-    private lateinit var mDbWorkerThread: DbWorkerThread
- var mainLis=arrayListOf<WeatherData>()
-    private val mUiHandler = Handler()
+    var mainLis = arrayListOf<WeatherData>()
+
     companion object {
         fun newintance(tag: String): DialogFragment {
             val taskDoalogFragment = TaskDoalogFragment();
@@ -36,10 +33,11 @@ class TaskDoalogFragment : DialogFragment() {
 
         }
     }
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
         inflater.inflate(R.layout.fragment_task_doalog, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,34 +48,18 @@ class TaskDoalogFragment : DialogFragment() {
                 mDb?.weatherDataDao()?.getAll()
             if (weatherData == null || weatherData?.size == 0) {
                 // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
-                Log.e("databasex","onnull")
+                Log.e("databasex", "onnull")
             } else {
                 val sizeL = weatherData.size
-                mainLis= weatherData as ArrayList<WeatherData>
-                Log.e("database", "S:$sizeL")
-                Log.e("databasex", "on back")
-                task_list_rv.adapter=ToDoAdapter(   mainLis as ArrayList<WeatherData>)
+                mainLis = weatherData as ArrayList<WeatherData>
+                task_list_rv.adapter = ToDoAdapter(mainLis as ArrayList<WeatherData>)
             }
         }
-    thread.start()
-        task_list_rv.apply {
+        thread.start()
+        task_list_rv.layoutManager= LinearLayoutManager(activity)
 
-            layoutManager = LinearLayoutManager(activity)
-
-            Log.e("databasex", "on ui")
-            val sizeL = mainLis.size
-            Log.e("database", " adapter S:$sizeL")
-           // adapter = ToDoAdapter(   mainLis as ArrayList<String>)
-        }
 
     }
-
-    private fun convertDataToStringArray(mainLis: ArrayList<WeatherData>):ArrayList<String> {
-        val res= arrayListOf<String>()
-        for (i in mainLis) { res.add(element = i.title) }
-        return res
-    }
-
 
 
 }

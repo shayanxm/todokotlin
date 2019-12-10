@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fakhteh.fanavaran.kotlin.R
 import fakhteh.fanavaran.kotlin.database.WeatherData
-import fakhteh.fanavaran.kotlin.model.DataBase
 import fakhteh.fanavaran.kotlin.model.Prioritys
 import kotlinx.android.synthetic.main.todo_list_row.view.*
 
@@ -31,19 +30,13 @@ class ToDoAdapter(private val mainList: ArrayList<WeatherData>) :
             Log.d("RecyclerView", "CLICK!")
         }
 
-        companion object {
-            //5
-            private val PHOTO_KEY = "PHOTO"
-        }
+
 
         fun bindView(name: WeatherData, position: Int) {
-//            this.photo = photo
-//            Picasso.with(view.context).load(photo.url).into(view.itemImage)
-//            view.itemDate.text = photo.humanDate
-//            view.itemDescription.text = photo.explanation
-//
+
             this.name = name
             view.row_name.text = name.title
+
             when (name.prio) {
                 Prioritys.HIGH.prioNum -> view.setBackgroundColor(Color.RED)
                 Prioritys.MEDIUM.prioNum -> view.setBackgroundColor(Color.YELLOW)

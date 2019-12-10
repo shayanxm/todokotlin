@@ -8,11 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fakhteh.fanavaran.kotlin.R
 import fakhteh.fanavaran.kotlin.database.*
-import fakhteh.fanavaran.kotlin.model.DataBase
 import fakhteh.fanavaran.kotlin.model.Prioritys
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +23,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        mDbWorkerThread.start()
+        workerThreadStarter()
+
         mDb = WeatherDataBase.getInstance(this)
 
         show_task_page.setOnClickListener(View.OnClickListener { unit ->
@@ -46,40 +42,42 @@ class MainActivity : AppCompatActivity() {
                 })
             }
             mDbWorkerThread.postTask(task)
-            val transaction = supportFragmentManager.beginTransaction()
-            val previous = supportFragmentManager.findFragmentByTag(tranfserTag)
-            if (previous != null) {
-                transaction.remove(previous)
-            }
-            transaction.addToBackStack(null)
-
-            val dialogFragment =
-                TaskDoalogFragment.newintance("parameter")
-            dialogFragment.show(transaction, tranfserTag)
+            goToDialogFragment()
         })
         add_to_list.setOnClickListener(View.OnClickListener { unit ->
-            DataBase.taskList?.add(task_title.text.toString())
-            DataBase.priorityOfTaskList.add(convertRbToIn())
 
-            var weatherData=WeatherData(null,task_title.text.toString(),  convertRbToInT())
-            insertWeatherDataInDb(weatherData)
-            Log.e(
-                "testing",
-                DataBase.taskList!!.size.toString() + "\n" + DataBase.taskList!!.get(0)
-            )
+
+            insertToDataBase(task_title.text.toString(),convertRbToInT())
+
         }
 
         )
     }
 
-    private fun convertRbToIn(): Prioritys {
-if(low_prio_RB.isChecked)return Prioritys.LOW
-    if(med_prio_RB.isChecked)return Prioritys.MEDIUM
-        if(hg_prio_RB.isChecked)return Prioritys.HIGH
-        Toast.makeText(this@MainActivity,"you can alsow enter a priority ",Toast.LENGTH_SHORT)
-        return Prioritys.UNDIFINED
-
+    private fun insertToDataBase(title:String,prio:Int) {
+        var weatherData = WeatherData(null, title, prio)
+        insertWeatherDataInDb(weatherData)
     }
+
+    private fun goToDialogFragment() {
+        val transaction = supportFragmentManager.beginTransaction()
+        val previous = supportFragmentManager.findFragmentByTag(tranfserTag)
+        if (previous != null) {
+            transaction.remove(previous)
+        }
+        transaction.addToBackStack(null)
+
+        val dialogFragment =
+            TaskDoalogFragment.newintance("parameter")
+        dialogFragment.show(transaction, tranfserTag)
+    }
+
+    private fun workerThreadStarter() {
+        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
+        mDbWorkerThread.start()
+    }
+
+
     private fun convertRbToInT(): Int {
         if(low_prio_RB.isChecked)return  Prioritys.LOW.prioNum
         if(med_prio_RB.isChecked)return Prioritys.MEDIUM.prioNum
@@ -93,4 +91,5 @@ if(low_prio_RB.isChecked)return Prioritys.LOW
         val task = Runnable { mDb?.weatherDataDao()?.insert(weatherData) }
         mDbWorkerThread.postTask(task)
     }
+
 }
