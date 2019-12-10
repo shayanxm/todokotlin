@@ -81,11 +81,12 @@ if(low_prio_RB.isChecked)return Prioritys.LOW
 
     }
     private fun convertRbToInT(): Int {
-        if(low_prio_RB.isChecked)return 3
-        if(med_prio_RB.isChecked)return 2
-        if(hg_prio_RB.isChecked)return 1
+        if(low_prio_RB.isChecked)return  Prioritys.LOW.prioNum
+        if(med_prio_RB.isChecked)return Prioritys.MEDIUM.prioNum
+        if(hg_prio_RB.isChecked)return Prioritys.HIGH.prioNum
+
         Toast.makeText(this@MainActivity,"you can alsow enter a priority ",Toast.LENGTH_SHORT)
-        return 4
+        return Prioritys.UNDIFINED.prioNum
 
     }
     private fun insertWeatherDataInDb(weatherData: WeatherData) {
