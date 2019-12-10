@@ -33,6 +33,7 @@ class TaskDoalogFragment : DialogFragment() {
 
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +43,7 @@ class TaskDoalogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val thread = Thread {
             mDb = WeatherDataBase.getInstance(requireContext())
             val weatherData =
@@ -52,11 +54,29 @@ class TaskDoalogFragment : DialogFragment() {
             } else {
                 val sizeL = weatherData.size
                 mainLis = weatherData as ArrayList<WeatherData>
-                task_list_rv.adapter = ToDoAdapter(mainLis as ArrayList<WeatherData>)
+                adapter = ToDoAdapter(mainLis as ArrayList<WeatherData>)
+                Log.e("onIemCLcik", " out thread on ${Thread.currentThread().getName()}")
+                adapter.onItemClick = { pos, view ->
+                    val thread = Thread {
+                        Log.e("onIemCLcik", " clicked on $pos")
+                        mainLis.get(pos).id?.let { mDb?.weatherDataDao()?.deleteWithId(it) }
+                        Log.e("onIemCLcik", " thread on ${Thread.currentThread().getName()}")
+//                        adapter =
+//                            ToDoAdapter(mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
+                        mainLis = (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
+//                   adapter!!.notifyDataSetChanged()
+                        adapter.update(
+                            (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>), adapter)
+                    }
+                    thread.start()
+                    task_list_rv.adapter!!.notifyDataSetChanged()
+                }
+                task_list_rv.adapter = adapter
+
             }
         }
         thread.start()
-        task_list_rv.layoutManager= LinearLayoutManager(activity)
+        task_list_rv.layoutManager = LinearLayoutManager(activity)
 
 
     }

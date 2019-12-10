@@ -1,6 +1,7 @@
 package fakhteh.fanavaran.kotlin.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -16,4 +17,6 @@ interface WeatherDataDao {
 
     @Query("DELETE from weatherData")
     fun deleteAll()
+    @Query("Delete from weatherData  WHERE id = :taskId ")
+    fun deleteWithId( taskId:Long)
 }
