@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mDbWorkerThread: DbWorkerThread
     @Inject
     lateinit var AppContext: Context
+    @Inject
+    lateinit var dataBase
     private val mUiHandler = Handler()
 
     companion object {
