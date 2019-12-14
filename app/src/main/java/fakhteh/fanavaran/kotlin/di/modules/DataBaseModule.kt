@@ -10,7 +10,7 @@ import fakhteh.fanavaran.kotlin.di.qualifier.ApplicationContextQuailfier
 @Module
 class DataBaseModule {
     @Provides
-    fun dataBaseProvider(@ApplicationContextQuailfier context:Context):WeatherDataBase{
+    fun dataBaseProvider( context:Context):WeatherDataBase{
         return  WeatherDataBase.getInstance(context)!!
     }
 }

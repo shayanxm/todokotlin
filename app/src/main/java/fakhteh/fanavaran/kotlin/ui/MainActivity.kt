@@ -9,19 +9,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import fakhteh.fanavaran.kotlin.R
 import fakhteh.fanavaran.kotlin.database.*
-import fakhteh.fanavaran.kotlin.di.component.DaggerServiceaApplicationComonent
+import fakhteh.fanavaran.kotlin.di.component.DaggerDataBaseComponent
+
 import fakhteh.fanavaran.kotlin.di.modules.ApplicationContextModule
+import fakhteh.fanavaran.kotlin.di.modules.DataBaseModule
 import fakhteh.fanavaran.kotlin.model.Prioritys
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    private var mDb: WeatherDataBase? = null
+    //   private var mDb: WeatherDataBase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
     @Inject
     lateinit var AppContext: Context
     @Inject
-    lateinit var dataBase
+    lateinit var mdb: WeatherDataBase
     private val mUiHandler = Handler()
 
     companion object {
@@ -37,19 +39,21 @@ class MainActivity : AppCompatActivity() {
 //            .applicationContextModule(new ApplicationContextModule(this))
 //            .build()
 //            .inject(this);Da
-        val applicationContextModule=ApplicationContextModule(applicationContext)
-        DaggerServiceaApplicationComonent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
 
+        val applicationContextModule = ApplicationContextModule(applicationContext)
+        val database=DataBaseModule()
+        //DaggerServiceaApplicationComonent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
+        DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
 
+//DaggerDataBaseComponent.builder().build()
 
-
-        mDb = WeatherDataBase.getInstance(AppContext)
+        //  mdb = WeatherDataBase.getInstance(AppContext)
 
         show_task_page.setOnClickListener(View.OnClickListener { unit ->
 
             val task = Runnable {
                 val weatherData =
-                    mDb?.weatherDataDao()?.getAll()
+                    mdb?.weatherDataDao()?.getAll()
                 mUiHandler.post({
                     if (weatherData == null || weatherData?.size == 0) {
                         // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
@@ -107,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun insertWeatherDataInDb(weatherData: WeatherData) {
-        val task = Runnable { mDb?.weatherDataDao()?.insert(weatherData) }
+        val task = Runnable { mdb?.weatherDataDao()?.insert(weatherData) }
         mDbWorkerThread.postTask(task)
     }
 

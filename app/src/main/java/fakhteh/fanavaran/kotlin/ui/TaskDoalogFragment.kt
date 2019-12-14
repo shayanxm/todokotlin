@@ -15,25 +15,33 @@ import fakhteh.fanavaran.kotlin.R
 import fakhteh.fanavaran.kotlin.database.DbWorkerThread
 import fakhteh.fanavaran.kotlin.database.WeatherData
 import fakhteh.fanavaran.kotlin.database.WeatherDataBase
+import fakhteh.fanavaran.kotlin.di.component.DaggerDataBaseComponent
+import fakhteh.fanavaran.kotlin.di.modules.ApplicationContextModule
 import kotlinx.android.synthetic.main.fragment_task_doalog.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 class TaskDoalogFragment : DialogFragment() {
     private lateinit var adapter: ToDoAdapter
-    private var mDb: WeatherDataBase? = null
+    @Inject
+    lateinit var mDb: WeatherDataBase
     var mainLis = arrayListOf<WeatherData>()
 
     companion object {
         fun newintance(tag: String): DialogFragment {
-            val taskDoalogFragment = TaskDoalogFragment();
+            val taskDoalogFragment = TaskDoalogFragment()
 
             return taskDoalogFragment
 
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        DaggerDataBaseComponent.builder().applicationContextModule(ApplicationContextModule(requireContext().applicationContext)).build().injectFragment(this)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +53,7 @@ class TaskDoalogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val thread = Thread {
-            mDb = WeatherDataBase.getInstance(requireContext())
+           // mDb = WeatherDataBase.getInstance(requireContext())
             val weatherData =
                 mDb?.weatherDataDao()?.getAll()
             if (weatherData == null || weatherData?.size == 0) {
@@ -57,6 +65,7 @@ class TaskDoalogFragment : DialogFragment() {
                 adapter = ToDoAdapter(mainLis as ArrayList<WeatherData>)
                 Log.e("onIemCLcik", " out thread on ${Thread.currentThread().getName()}")
                 adapter.onItemClick = { pos, view ->
+
                     val thread = Thread {
                         Log.e("onIemCLcik", " clicked on $pos")
                         mainLis.get(pos).id?.let { mDb?.weatherDataDao()?.deleteWithId(it) }
