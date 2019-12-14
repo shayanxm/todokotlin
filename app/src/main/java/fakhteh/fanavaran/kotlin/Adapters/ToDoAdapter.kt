@@ -18,12 +18,13 @@ class ToDoAdapter(private var mainList: ArrayList<WeatherData>) :
     RecyclerView.Adapter<ToDoAdapter.MyViewHolder>() {
 
 
-
-
+    public var onItemClickx: ((pos: Int) -> Unit)? = null
+    public var onEditClick: ((pos: Int) -> Unit)? = null
 
     var onItemClick: ((pos: Int, view: View) -> Unit)? = null
 
-    class MyViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+  inner  class MyViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+
         //2
         private var view: View = v
         // private var photo: Photo? = null
@@ -42,7 +43,20 @@ class ToDoAdapter(private var mainList: ArrayList<WeatherData>) :
 
             this.name = name
             view.row_name.text = name.title
+        view.row_delete_item.setOnClickListener {
+           // Log.e("delete", "detelte it ${weatherData.id}")
 
+          //  val v: View = holder.itemView
+
+            onItemClickx?.invoke(position)
+        }
+            view.row_edit_item.setOnClickListener {
+                // Log.e("delete", "detelte it ${weatherData.id}")
+
+                //  val v: View = holder.itemView
+
+                onEditClick?.invoke(position)
+            }
             when (name.prio) {
                 Prioritys.HIGH.prioNum -> view.setBackgroundColor(Color.RED)
                 Prioritys.MEDIUM.prioNum -> view.setBackgroundColor(Color.YELLOW)
@@ -72,13 +86,13 @@ class ToDoAdapter(private var mainList: ArrayList<WeatherData>) :
         val weatherData = mainList[position]
         holder.bindView(weatherData, position)
 
-        holder.itemView.setOnClickListener {
-            Log.e("delete", "detelte it ${weatherData.id}")
-
-            val v: View = holder.itemView
-
-            onItemClick?.invoke(position, v)
-        }
+//        holder.itemView.setOnClickListener {
+//            Log.e("delete", "detelte it ${weatherData.id}")
+//
+//            val v: View = holder.itemView
+//
+//            onItemClick?.invoke(position, v)
+//        }
     }
 
     // lateinit var mainList :List<String>
