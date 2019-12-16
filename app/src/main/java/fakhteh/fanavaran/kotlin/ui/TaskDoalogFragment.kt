@@ -94,18 +94,7 @@ class TaskDoalogFragment : DialogFragment() {
                 }
                 adapter.onEditClick = { pos ->
                     alertEditTextKeyboardShown(pos)
-//                    val thread = Thread {
-//
-//                        mainLis.get(pos)?.let { mDb?.weatherDataDao()?.editWithObj(it) }
-//
-//
-//                        mainLis = (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
-//
-//                        adapter.update(
-//                            (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>), adapter)
-//                    }
-//                    thread.start()
-//                    task_list_rv.adapter!!.notifyDataSetChanged()
+
                 }
                 task_list_rv.adapter = adapter
 
@@ -124,7 +113,7 @@ class TaskDoalogFragment : DialogFragment() {
 
         // create the AlertDialog as final
         val dialog = AlertDialog.Builder(requireContext())
-            .setMessage("ادرس خود را وارد کنید")
+            .setMessage("متن جدید را وارد کنید.")
 
             // .setTitle("تعیین ادرس")
             .setView(editText)
