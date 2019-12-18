@@ -7,16 +7,21 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProvider
 import fakhteh.fanavaran.kotlin.R
 import fakhteh.fanavaran.kotlin.database.*
+import fakhteh.fanavaran.kotlin.databinding.ActivityMainBinding
 import fakhteh.fanavaran.kotlin.di.component.DaggerDataBaseComponent
 
 import fakhteh.fanavaran.kotlin.di.modules.ApplicationContextModule
 import fakhteh.fanavaran.kotlin.di.modules.DataBaseModule
 import fakhteh.fanavaran.kotlin.model.Prioritys
+import fakhteh.fanavaran.kotlin.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-
+import androidx.lifecycle.ViewModelProviders
 class MainActivity : AppCompatActivity() {
     //   private var mDb: WeatherDataBase? = null
     private lateinit var mDbWorkerThread: DbWorkerThread
@@ -25,14 +30,17 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var mdb: WeatherDataBase
     private val mUiHandler = Handler()
-
+private lateinit var viewModel:MainViewModel
+    lateinit var binding: ActivityMainBinding
     companion object {
         val tranfserTag = "fakhteh.fanavaran.kotlin.tag"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+      binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        binding.viewModel=viewModel
         workerThreadStarter()
 //        DaggerServiceaApplicationComonentbuilder()
 //            .builder()
@@ -44,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val database=DataBaseModule()
         //DaggerServiceaApplicationComonent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
-
+viewModel.getmdb(mdb)
 //DaggerDataBaseComponent.builder().build()
 
         //  mdb = WeatherDataBase.getInstance(AppContext)
@@ -66,14 +74,14 @@ class MainActivity : AppCompatActivity() {
             mDbWorkerThread.postTask(task)
             goToDialogFragment()
         })
-        add_to_list.setOnClickListener(View.OnClickListener { unit ->
+//        add_to_list.setOnClickListener(View.OnClickListener { unit ->
+//
+//
+//            insertToDataBase(task_title.text.toString(), convertRbToInT())
+//
+//        }
 
-
-            insertToDataBase(task_title.text.toString(), convertRbToInT())
-
-        }
-
-        )
+      //  )
     }
 
     private fun insertToDataBase(title: String, prio: Int) {
