@@ -6,11 +6,12 @@ import fakhteh.fanavaran.kotlin.di.modules.DataBaseModule
 import fakhteh.fanavaran.kotlin.di.scopes.CustomApplicationScope
 import fakhteh.fanavaran.kotlin.ui.MainActivity
 import fakhteh.fanavaran.kotlin.ui.TaskDoalogFragment
+import fakhteh.fanavaran.kotlin.viewmodel.MainViewModel
 
 @CustomApplicationScope
 @Component(modules = [DataBaseModule::class,ApplicationContextModule::class])
 interface DataBaseComponent {
     public fun injectActivity(mainActivity: MainActivity)
     fun injectFragment(DialogFragment:TaskDoalogFragment)
-
+fun injectViewModel(mainViewModel: MainViewModel)
 }

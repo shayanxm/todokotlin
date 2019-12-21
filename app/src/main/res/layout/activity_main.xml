@@ -74,19 +74,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_title">
 
+
             <RadioButton
+android:checked="@={viewModel.lowChecked}"
+
                 android:id="@+id/low_prio_RB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="low" />
 
             <RadioButton
+                android:checked="@={viewModel.midChecked}"
                 android:id="@+id/med_prio_RB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text="medium" />
 
+
             <RadioButton
+                android:checked="@={viewModel.highChecked}"
                 android:id="@+id/hg_prio_RB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

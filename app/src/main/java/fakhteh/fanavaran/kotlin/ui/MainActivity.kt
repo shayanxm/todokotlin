@@ -52,6 +52,7 @@ private lateinit var viewModel:MainViewModel
         val database=DataBaseModule()
         //DaggerServiceaApplicationComonent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
+        DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectViewModel(viewModel)
 viewModel.getmdb(mdb)
 //DaggerDataBaseComponent.builder().build()
 
