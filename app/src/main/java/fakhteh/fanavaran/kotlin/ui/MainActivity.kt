@@ -24,12 +24,12 @@ import javax.inject.Inject
 import androidx.lifecycle.ViewModelProviders
 class MainActivity : AppCompatActivity() {
     //   private var mDb: WeatherDataBase? = null
-    private lateinit var mDbWorkerThread: DbWorkerThread
+
     @Inject
     lateinit var AppContext: Context
     @Inject
     lateinit var mdb: WeatherDataBase
-    private val mUiHandler = Handler()
+
 private lateinit var viewModel:MainViewModel
     lateinit var binding: ActivityMainBinding
     companion object {
@@ -41,53 +41,12 @@ private lateinit var viewModel:MainViewModel
       binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.viewModel=viewModel
-        workerThreadStarter()
-//        DaggerServiceaApplicationComonentbuilder()
-//            .builder()
-//            .applicationContextModule(new ApplicationContextModule(this))
-//            .build()
-//            .inject(this);Da
-
         val applicationContextModule = ApplicationContextModule(applicationContext)
-        val database=DataBaseModule()
-        //DaggerServiceaApplicationComonent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
-        DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectActivity(this)
+
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectViewModel(viewModel)
-viewModel.getmdb(mdb)
-//DaggerDataBaseComponent.builder().build()
-
-        //  mdb = WeatherDataBase.getInstance(AppContext)
-
         show_task_page.setOnClickListener(View.OnClickListener { unit ->
-
-            val task = Runnable {
-                val weatherData =
-                    mdb?.weatherDataDao()?.getAll()
-                mUiHandler.post({
-                    if (weatherData == null || weatherData?.size == 0) {
-                        // showToast("No data in cache..!!", Toast.LENGTH_SHORT)
-                    } else {
-                        val sizeL = weatherData.size
-                        Log.e("database", "S:$sizeL")
-                    }
-                })
-            }
-            mDbWorkerThread.postTask(task)
             goToDialogFragment()
         })
-//        add_to_list.setOnClickListener(View.OnClickListener { unit ->
-//
-//
-//            insertToDataBase(task_title.text.toString(), convertRbToInT())
-//
-//        }
-
-      //  )
-    }
-
-    private fun insertToDataBase(title: String, prio: Int) {
-        var weatherData = WeatherData(null, title, prio)
-        insertWeatherDataInDb(weatherData)
     }
 
     private fun goToDialogFragment() {
@@ -101,27 +60,6 @@ viewModel.getmdb(mdb)
         val dialogFragment =
             TaskDoalogFragment.newintance("parameter")
         dialogFragment.show(transaction, tranfserTag)
-    }
-
-    private fun workerThreadStarter() {
-        mDbWorkerThread = DbWorkerThread("dbWorkerThread")
-        mDbWorkerThread.start()
-    }
-
-
-    private fun convertRbToInT(): Int {
-        if (low_prio_RB.isChecked) return Prioritys.LOW.prioNum
-        if (med_prio_RB.isChecked) return Prioritys.MEDIUM.prioNum
-        if (hg_prio_RB.isChecked) return Prioritys.HIGH.prioNum
-
-        Toast.makeText(this@MainActivity, "you can alsow enter a priority ", Toast.LENGTH_SHORT)
-        return Prioritys.UNDIFINED.prioNum
-
-    }
-
-    private fun insertWeatherDataInDb(weatherData: WeatherData) {
-        val task = Runnable { mdb?.weatherDataDao()?.insert(weatherData) }
-        mDbWorkerThread.postTask(task)
     }
 
 }

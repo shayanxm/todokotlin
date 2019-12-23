@@ -18,7 +18,7 @@ import fakhteh.fanavaran.kotlin.database.WeatherDataBase
 import fakhteh.fanavaran.kotlin.di.component.DaggerDataBaseComponent
 import fakhteh.fanavaran.kotlin.di.modules.ApplicationContextModule
 import kotlinx.android.synthetic.main.fragment_task_doalog.*
-import kotlinx.android.synthetic.main.todo_list_row.view.*
+import kotlinx.android.synthetic.main.task_list_row.view.*
 import javax.inject.Inject
 import android.view.WindowManager
 import android.content.DialogInterface
@@ -73,30 +73,33 @@ class TaskDoalogFragment : DialogFragment() {
             } else {
                 val sizeL = weatherData.size
                 mainLis = weatherData as ArrayList<WeatherData>
-                adapter = ToDoAdapter(mainLis as ArrayList<WeatherData>)
+              adapter = ToDoAdapter()
+                adapter.updatePostList(mainLis)
                 Log.e("onIemCLcik", " out thread on ${Thread.currentThread().getName()}")
-                adapter.onItemClickx = { pos ->
-
-                    val thread = Thread {
-                        Log.e("onIemCLcik", " clicked on $pos")
-                        mainLis.get(pos).id?.let { mDb?.weatherDataDao()?.deleteWithId(it) }
-                        Log.e("onIemCLcik", " thread on ${Thread.currentThread().getName()}")
-//                        adapter =
-//                            ToDoAdapter(mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
-                        mainLis = (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
-//                   adapter!!.notifyDataSetChanged()
-                        adapter.update(
-                            (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>), adapter
-                        )
-                    }
-                    thread.start()
-                    task_list_rv.adapter!!.notifyDataSetChanged()
-                }
-                adapter.onEditClick = { pos ->
-                    alertEditTextKeyboardShown(pos)
-
-                }
-                task_list_rv.adapter = adapter
+//                adapter.onItemClickx = { pos ->
+//
+//                    val thread = Thread {
+//                        Log.e("onIemCLcik", " clicked on $pos")
+//                        mainLis.get(pos).id?.let { mDb?.weatherDataDao()?.deleteWithId(it) }
+//                        Log.e("onIemCLcik", " thread on ${Thread.currentThread().getName()}")
+////                        adapter =
+////                            ToDoAdapter(mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
+//                        mainLis = (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
+////                   adapter!!.notifyDataSetChanged()
+//                        adapter.updatePostList(
+//                            (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
+//                        )
+//                    }
+//                    thread.start()
+//                    task_list_rv.recycledViewPool.clear()
+//                    task_list_rv.adapter!!.notifyDataSetChanged()
+//
+//                }
+//                adapter.onEditClick = { pos ->
+////                    alertEditTextKeyboardShown(pos)
+////
+////                }
+               // task_list_rv.adapter = adapter
 
             }
         }
@@ -134,9 +137,8 @@ class TaskDoalogFragment : DialogFragment() {
                         mDb?.weatherDataDao()?.editWithObj(itemToEdit)
                         mainLis = (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>)
 
-                        adapter.update(
-                            (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>), adapter
-                        )
+                        adapter.updatePostList(
+                            (mDb?.weatherDataDao()?.getAll() as ArrayList<WeatherData>))
                     }
                     thread.start()
                     task_list_rv.adapter!!.notifyDataSetChanged()

@@ -12,6 +12,8 @@ import fakhteh.fanavaran.kotlin.database.WeatherDataBase
 import fakhteh.fanavaran.kotlin.di.component.DaggerDataBaseComponent
 import fakhteh.fanavaran.kotlin.di.modules.ApplicationContextModule
 import fakhteh.fanavaran.kotlin.model.Prioritys
+import fakhteh.fanavaran.kotlin.ui.MainActivity
+import fakhteh.fanavaran.kotlin.ui.TaskDoalogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 import javax.sql.StatementEvent
@@ -71,5 +73,6 @@ class MainViewModel : ViewModel() {
     }
 
 
+    fun clickedOnDialog(){}
 
 }

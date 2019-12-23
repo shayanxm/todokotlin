@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<variable
-    name="viewModel"
-    type="fakhteh.fanavaran.kotlin.viewmodel.MainViewModel" />
+
+        <variable
+            name="viewModel"
+            type="fakhteh.fanavaran.kotlin.viewmodel.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:text="@={viewModel.editTextValut}"
             android:hint="enter your task title here !"
+            android:text="@={viewModel.editTextValut}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -42,10 +43,10 @@
 
         <Button
             android:id="@+id/add_to_list"
-            android:onClick="@{() -> viewModel.onAddToDbClicked()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:onClick="@{() -> viewModel.onAddToDbClicked()}"
             android:text="add this to list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -65,10 +66,10 @@
             app:layout_constraintVertical_bias="0.263" />
 
         <RadioGroup
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/add_to_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,27 +77,27 @@
 
 
             <RadioButton
-android:checked="@={viewModel.lowChecked}"
-
                 android:id="@+id/low_prio_RB"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="@={viewModel.lowChecked}"
                 android:text="low" />
 
             <RadioButton
-                android:checked="@={viewModel.midChecked}"
                 android:id="@+id/med_prio_RB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="@={viewModel.midChecked}"
 
                 android:text="medium" />
 
 
             <RadioButton
-                android:checked="@={viewModel.highChecked}"
                 android:id="@+id/hg_prio_RB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="@={viewModel.highChecked}"
                 android:text="high" />
         </RadioGroup>
 
