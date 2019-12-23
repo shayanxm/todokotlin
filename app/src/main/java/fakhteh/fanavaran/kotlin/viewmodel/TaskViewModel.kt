@@ -11,7 +11,7 @@ import fakhteh.fanavaran.kotlin.di.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_task_doalog.*
 import javax.inject.Inject
 
-class TaskViewModel(var context: Context) : ViewModel() {
+class TaskViewModel() : ViewModel() {
     val postListAdapter: ToDoAdapter = ToDoAdapter()
     private val taskTitle = MutableLiveData<String>()
     private val taskPrio = MutableLiveData<Int>()

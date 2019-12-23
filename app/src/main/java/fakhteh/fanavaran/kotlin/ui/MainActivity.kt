@@ -45,7 +45,7 @@ private lateinit var viewModel:MainViewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.viewModel=viewModel
         val applicationContextModule = ApplicationContextModule(applicationContext)
-val taskViewModel=TaskViewModel(applicationContext)
+val taskViewModel=TaskViewModel()
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectViewModel(viewModel)
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectTaskVm(taskViewModel)
         show_task_page.setOnClickListener(View.OnClickListener { unit ->
