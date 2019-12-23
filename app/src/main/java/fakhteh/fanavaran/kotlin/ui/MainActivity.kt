@@ -22,6 +22,8 @@ import fakhteh.fanavaran.kotlin.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 import androidx.lifecycle.ViewModelProviders
+import fakhteh.fanavaran.kotlin.viewmodel.TaskViewModel
+
 class MainActivity : AppCompatActivity() {
     //   private var mDb: WeatherDataBase? = null
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mdb: WeatherDataBase
 
 private lateinit var viewModel:MainViewModel
+
     lateinit var binding: ActivityMainBinding
     companion object {
         val tranfserTag = "fakhteh.fanavaran.kotlin.tag"
@@ -42,8 +45,9 @@ private lateinit var viewModel:MainViewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.viewModel=viewModel
         val applicationContextModule = ApplicationContextModule(applicationContext)
-
+val taskViewModel=TaskViewModel(applicationContext)
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectViewModel(viewModel)
+        DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectTaskVm(taskViewModel)
         show_task_page.setOnClickListener(View.OnClickListener { unit ->
             goToDialogFragment()
         })

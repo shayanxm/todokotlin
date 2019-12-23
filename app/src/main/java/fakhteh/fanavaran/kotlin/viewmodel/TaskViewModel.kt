@@ -1,19 +1,28 @@
 package fakhteh.fanavaran.kotlin.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import fakhteh.fanavaran.kotlin.Adapters.ToDoAdapter
 import fakhteh.fanavaran.kotlin.database.WeatherData
+import fakhteh.fanavaran.kotlin.database.WeatherDataBase
 import fakhteh.fanavaran.kotlin.di.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_task_doalog.*
+import javax.inject.Inject
 
-class TaskViewModel : ViewModel() {
+class TaskViewModel(var context: Context) : ViewModel() {
+    val postListAdapter: ToDoAdapter = ToDoAdapter()
     private val taskTitle = MutableLiveData<String>()
     private val taskPrio = MutableLiveData<Int>()
-
+    @Inject
+    lateinit var mdb: WeatherDataBase
     fun bind(weatherData: WeatherData) {
         taskTitle.value = weatherData.title
         taskPrio.value = weatherData.prio
+    }
+    init {
+        loadList()
     }
 
     fun getPostTitle(): MutableLiveData<String> {
@@ -22,6 +31,11 @@ class TaskViewModel : ViewModel() {
 
     fun getPostBody(): MutableLiveData<Int> {
         return taskPrio
+    }
+    fun loadList(){
+//        var mainList=mdb.weatherDataDao().getAll()
+//        mainList.forEach { taskTitle.value.plus(it.title )}
+postListAdapter.updatePostList(mdb.weatherDataDao().getAll())
     }
 
     fun edtTask() {}
