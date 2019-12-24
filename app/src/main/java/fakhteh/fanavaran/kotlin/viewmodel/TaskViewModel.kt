@@ -15,14 +15,13 @@ class TaskViewModel() : ViewModel() {
     val postListAdapter: ToDoAdapter = ToDoAdapter()
     private val taskTitle = MutableLiveData<String>()
     private val taskPrio = MutableLiveData<Int>()
-    @Inject
-    lateinit var mdb: WeatherDataBase
+
     fun bind(weatherData: WeatherData) {
         taskTitle.value = weatherData.title
         taskPrio.value = weatherData.prio
     }
     init {
-        loadList()
+        //loadList()
     }
 
     fun getPostTitle(): MutableLiveData<String> {
@@ -32,11 +31,7 @@ class TaskViewModel() : ViewModel() {
     fun getPostBody(): MutableLiveData<Int> {
         return taskPrio
     }
-    fun loadList(){
-//        var mainList=mdb.weatherDataDao().getAll()
-//        mainList.forEach { taskTitle.value.plus(it.title )}
-postListAdapter.updatePostList(mdb.weatherDataDao().getAll())
-    }
+
 
     fun edtTask() {}
     fun deleteTask() {

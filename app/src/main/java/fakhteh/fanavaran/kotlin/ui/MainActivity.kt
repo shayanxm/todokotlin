@@ -47,7 +47,7 @@ private lateinit var viewModel:MainViewModel
         val applicationContextModule = ApplicationContextModule(applicationContext)
 val taskViewModel=TaskViewModel()
         DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectViewModel(viewModel)
-        DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectTaskVm(taskViewModel)
+
         show_task_page.setOnClickListener(View.OnClickListener { unit ->
             goToDialogFragment()
         })

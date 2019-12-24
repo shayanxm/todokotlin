@@ -25,6 +25,13 @@ import android.content.DialogInterface
 import android.widget.EditText
 import android.R
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import fakhteh.fanavaran.kotlin.databinding.ActivityMainBinding
+import fakhteh.fanavaran.kotlin.databinding.FragmentTaskDoalogBinding
+import fakhteh.fanavaran.kotlin.viewmodel.MainViewModel
+import fakhteh.fanavaran.kotlin.viewmodel.TaskDialogViewModel
+import fakhteh.fanavaran.kotlin.viewmodel.TaskViewModel
 
 
 /**
@@ -36,7 +43,8 @@ class TaskDoalogFragment : DialogFragment() {
     lateinit var mDb: WeatherDataBase
     var mainLis = arrayListOf<WeatherData>()
     var changedName: String = ""
-
+    lateinit var binding: FragmentTaskDoalogBinding
+    private lateinit var viewModel: TaskDialogViewModel
     companion object {
         fun newintance(tag: String): DialogFragment {
             val taskDoalogFragment = TaskDoalogFragment()
@@ -47,22 +55,32 @@ class TaskDoalogFragment : DialogFragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         DaggerDataBaseComponent.builder()
             .applicationContextModule(ApplicationContextModule(requireContext().applicationContext))
             .build().injectFragment(this)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(fakhteh.fanavaran.kotlin.R.layout.fragment_task_doalog, container, false)
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
+        binding =
+            DataBindingUtil.inflate(inflater,fakhteh.fanavaran.kotlin.R.layout.fragment_task_doalog, container,false)
+
+
+        viewModel = ViewModelProviders.of(this).get(TaskDialogViewModel(requireContext())::class.java)
+        binding.viewModel=viewModel
+        val applicationContextModule = ApplicationContextModule(requireContext().applicationContext)
+        DaggerDataBaseComponent.builder().applicationContextModule(applicationContextModule).build().injectTaskVm(viewModel)
+        return binding.root
+
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProviders.of(requireActivity()).get(TaskDialogViewModel::class.java)
         val thread = Thread {
             // mDb = WeatherDataBase.getInstance(requireContext())
             val weatherData =
